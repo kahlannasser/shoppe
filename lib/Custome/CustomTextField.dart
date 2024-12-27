@@ -9,7 +9,7 @@ class CustomTextField extends StatefulWidget {
     super.key,
     required this.text,
     required this.borderRadius,
-    this.prefix,
+    this.prefix, required TextEditingController controller, required TextDirection textDirection,
   });
 
   @override

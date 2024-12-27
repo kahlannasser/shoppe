@@ -1,11 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shoppesfrist/Custome/CustomButton.dart';
 import 'package:shoppesfrist/Custome/CustomTextField.dart';
 import 'package:shoppesfrist/Custome/CustomeText.dart';
-import 'package:shoppesfrist/Start.dart';
+import 'package:shoppesfrist/Custome/Line.dart';
+import 'package:shoppesfrist/Custome/TextButton.dart';
 import 'Custome/CustomeImages.dart';
+import 'Login.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({super.key});
@@ -15,154 +16,131 @@ class CreateAccount extends StatefulWidget {
 }
 
 class _CreateAccountState extends State<CreateAccount> {
-  final Map<String, String> flagWithNationalId = {
-    'Assest/camera.svg': '966',
-    'Assest/CreateAccounttwo.svg': '1',
-  };
-
-  String selectedFlag = 'Assest/camera.svg';
-  String nationalId = '966';
-  bool isEditingNationalId = false; // علم على ما إذا كان المستخدم بدأ الكتابة أم لا
-
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   TextEditingController nationalIdController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    nationalIdController.text = nationalId;
-  }
+  String selectedFlag = 'Assest/camera.svg'; // العلم الافتراضي
+  String nationalId = ''; // الرقم الوطني المدخل من المستخدم
+  bool isEditingNationalId = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            backgroundColor: Colors.white,
-            expandedHeight: 390,
-            pinned: true,
-            flexibleSpace: Stack(
-              children: [
-                Container(color: Colors.white, height: 390, width: double.infinity),
-                const imagewhite(),
-                const Positioned(
-                  top: 90,
-                  left: 30,
-                  child: Center(
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  Container(
+                    height: 350,
+                    width: double.infinity,
+                    color: Colors.white,
+                  ),
+                  imagewhiteone(),
+                  const Positioned(
+                    top: 70,
+                    left: 30,
                     child: CustomeTextbold(text: "Create\nAccount"),
                   ),
-                ),
-                const Positioned(
-                  left: 280,
-                  top: 18,
-                  child: imageBule(),
-                ),
-                Positioned(
-                  child: ImageCamera(),
-                  left: 22,
-                  top: 260,
-                ),
-              ],
-            ),
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                CustomTextField(
+                  const Positioned(
+                    left: 280,
+                    top: 18,
+                    child: imageBule(),
+                  ),
+                  Positioned(
+                    child: ImageCamera(),
+                    left: 22,
+                    top: 260,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 40),
+              // حقل Email
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: CustomTextField(
                   text: "Email",
+                  controller: emailController,
                   borderRadius: 50,
+                  textDirection: TextDirection.ltr
                 ),
-                const SizedBox(height: 20),
-                CustomTextField(
+              ),
+              const SizedBox(height: 20),
+              // حقل Password
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: CustomTextField(
                   text: "Password",
-                  borderRadius: 50, // شكل مربع
+                  controller: passwordController,
+                  borderRadius: 50,
+                  textDirection: TextDirection.ltr,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 10.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey, width: 1.0),
-                      borderRadius: BorderRadius.circular(50), // شكل مربع
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
-                    child: Row(
-                      children: [
-                        // إخفاء العلم في حالة الكتابة
-                        if (!isEditingNationalId) ...[
-                          // العلم المحدد
-                          SvgPicture.asset(
-                            selectedFlag,
-                            width: 24,
-                            height: 24,
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey, width: 1.0),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        selectedFlag,
+                        width: 24,
+                        height: 24,
+                      ),
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: TextField(
+                          controller: nationalIdController,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            hintText: " |    Enter national ID",
+                            border: InputBorder.none,
+                            isDense: true,
                           ),
-                          SizedBox(width: 15),
-                          // القائمة المنسدلة لاختيار العلم
-                          DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              value: selectedFlag,
-                              icon: Icon(Icons.arrow_drop_down),
-                              items: flagWithNationalId.keys.map((url) {
-                                return DropdownMenuItem<String>(
-                                  value: url,
-                                  child: Row(
-                                    children: [
-                                      SvgPicture.asset(
-                                        url,
-                                        width: 24,
-                                        height: 24,
-                                      ),
-                                      SizedBox(width: 8),
-                                      Text("${flagWithNationalId[url]}"),
-                                    ],
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  selectedFlag = newValue!;
-                                  nationalId = flagWithNationalId[newValue]!;
-                                  nationalIdController.text = nationalId;
-                                });
-                              },
-                            ),
-                          ),
-                        ],
-                        Spacer(),
-                        // حقل الرقم الوطني فقط عند الكتابة
-                        Expanded(
-                          child: TextField(
-                            controller: nationalIdController,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              hintText: "Enter national ID",
-                              border: InputBorder.none,
-                              isDense: true,
-                            ),
-                            onChanged: (value) {
-                              setState(() {
-                                nationalId = value; // تحديث الرقم الوطني
-                                isEditingNationalId = value.isNotEmpty; // تحديد ما إذا كان المستخدم بدأ الكتابة
-                              });
-                            },
-                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              nationalId = value;
+                              isEditingNationalId = value.isNotEmpty;
+
+
+                            });
+                          },
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-                CustomButton(text: "Done",color: Color(0xFF004CFF),Navigators: Start(),),
-                SizedBox(height: 20,),
-                CustomeTextnormal(text: "Cancel",),
-                SizedBox(height: 50,),
-                Container(height: 5,width: 200,decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(25)
-                ),)
-              ],
-            ),
+              ),
+              // زر "Done"
+              const SizedBox(
+                width: double.infinity,
+                height: 61,
+                child: CustomButton(
+                  Navigators: Login(),
+                  color: Color(0xFF004CFF),
+                  text: "Done",
+                ),
+              ),
+              const SizedBox(height: 20),
+              CustomTextButton(),
+              const SizedBox(height: 20),
+              Line(),
+
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

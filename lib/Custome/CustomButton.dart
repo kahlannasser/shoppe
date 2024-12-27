@@ -14,7 +14,7 @@ class _State extends State<CustomButton> {
   @override
   Widget build(BuildContext context) {
     return  Container(
-      width: 150,
+      width: 180,
       height:60,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(100),

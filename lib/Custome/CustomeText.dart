@@ -27,8 +27,25 @@ class CustomeTextnormal extends StatelessWidget {
       text,
       style: const TextStyle(
         color: Colors.black,
-        fontSize: 20,
-        fontWeight: FontWeight.w200,
+        fontSize: 22,
+        fontWeight: FontWeight.w300,
+      ),
+      textAlign: TextAlign.center,
+    );
+  }
+}
+class CustomeTextnormal400 extends StatelessWidget {
+
+  const CustomeTextnormal400({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      "Hello, Romina!!",
+      style: const TextStyle(
+        color: Colors.black,
+        fontSize: 28,
+        fontWeight: FontWeight.bold,
       ),
       textAlign: TextAlign.center,
     );
